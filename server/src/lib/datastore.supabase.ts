@@ -127,7 +127,7 @@ export function createSupabaseStore(): DataStore {
     async listItinerary(tripId) {
       const { data } = await db
         .from('itinerary_items')
-        .select('id,trip_id,zone_id,place_id,day,start_time,title,note,position')
+        .select('id,trip_id,zone_id,place_id,day,start_time,title,note,position,highlight,icon')
         .eq('trip_id', tripId)
         .order('day', { ascending: true })
         .order('start_time', { ascending: true, nullsFirst: false })
@@ -146,6 +146,8 @@ export function createSupabaseStore(): DataStore {
         title: input.title,
         note: input.note ?? null,
         position: input.position ?? 0,
+        highlight: input.highlight ?? false,
+        icon: input.icon ?? null,
       }
       const { data, error } = await db.from('itinerary_items').insert(row).select().single()
       if (error) throw new Error(error.message)
@@ -161,6 +163,8 @@ export function createSupabaseStore(): DataStore {
       if (patch.title !== undefined) fields.title = patch.title
       if (patch.note !== undefined) fields.note = patch.note ?? null
       if (patch.position !== undefined) fields.position = patch.position ?? 0
+      if (patch.highlight !== undefined) fields.highlight = patch.highlight ?? false
+      if (patch.icon !== undefined) fields.icon = patch.icon ?? null
       const { data } = await db
         .from('itinerary_items')
         .update(fields)

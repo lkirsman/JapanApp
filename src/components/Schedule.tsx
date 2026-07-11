@@ -5,6 +5,7 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { ItineraryItem, TripStep } from '../api/types'
 import { dayZones, fmtDayLong, isTravelDay, primaryStep } from '../lib/schedule'
+import { DayHighlights } from './DayHighlights'
 import { DayPlan } from './DayPlan'
 import { DayStrip } from './DayStrip'
 
@@ -42,6 +43,8 @@ export function Schedule({ steps, items, days, today, mode, zoneId }: Props) {
 
   const newZoneId = mode === 'zone' ? (zoneId ?? null) : (primaryStep(steps, day)?.zone?.id ?? null)
   const zones = dayZones(steps, day)
+  const highlights = itemsForDay.filter((i) => i.highlight)
+  const planItems = itemsForDay.filter((i) => !i.highlight)
 
   return (
     <div className="space-y-4">
@@ -63,7 +66,9 @@ export function Schedule({ steps, items, days, today, mode, zoneId }: Props) {
         )}
       </div>
 
-      <DayPlan day={day} items={itemsForDay} zoneId={newZoneId} />
+      <DayHighlights day={day} highlights={highlights} zoneId={newZoneId} />
+
+      <DayPlan day={day} items={planItems} zoneId={newZoneId} />
     </div>
   )
 }

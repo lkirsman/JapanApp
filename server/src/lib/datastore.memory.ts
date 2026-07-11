@@ -57,6 +57,11 @@ export function createMemoryStore(initial?: MemoryData): DataStore {
   // deep clone so mutations never touch the caller's fixture or the JSON module cache
   const db: MemoryData = structuredClone(initial ?? loadPlaceholderData())
   db.itinerary ??= [] // optional in older fixtures
+  // backfill fields added after some fixtures/seed rows were written
+  for (const i of db.itinerary) {
+    i.highlight ??= false
+    i.icon ??= null
+  }
   // uploaded blobs live in memory only (dev/tests); seeded samples come from public/
   const blobs = new Map<string, { bytes: Buffer; mime: string }>()
   let latestRates: ExchangeRates | null = null
@@ -153,6 +158,8 @@ export function createMemoryStore(initial?: MemoryData): DataStore {
         title: input.title,
         note: input.note ?? null,
         position: input.position ?? 0,
+        highlight: input.highlight ?? false,
+        icon: input.icon ?? null,
       }
       db.itinerary!.push(item)
       return structuredClone(item)
@@ -168,6 +175,8 @@ export function createMemoryStore(initial?: MemoryData): DataStore {
       if (patch.title !== undefined) item.title = patch.title
       if (patch.note !== undefined) item.note = patch.note ?? null
       if (patch.position !== undefined) item.position = patch.position ?? 0
+      if (patch.highlight !== undefined) item.highlight = patch.highlight ?? false
+      if (patch.icon !== undefined) item.icon = patch.icon ?? null
       return structuredClone(item)
     },
 

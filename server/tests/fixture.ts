@@ -57,6 +57,8 @@ export function fixture(): MemoryData {
         title: 'Ramen Bar',
         note: null,
         position: 0,
+        highlight: false,
+        icon: null,
       },
       {
         id: 'itin-walk',
@@ -68,6 +70,8 @@ export function fixture(): MemoryData {
         title: 'Walk Shinjuku',
         note: 'After dinner',
         position: 0,
+        highlight: false,
+        icon: null,
       },
     ],
     files: [

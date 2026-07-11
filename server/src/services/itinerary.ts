@@ -30,6 +30,8 @@ function collectErrors(input: Partial<ItineraryItemInput>, partial: boolean): st
   }
   if (has('note') && (input.note ?? '').length > 1000)
     errors.push('note must be at most 1000 characters')
+  if (has('icon') && input.icon != null && [...input.icon].length > 8)
+    errors.push('icon must be at most 8 characters')
   return errors
 }
 

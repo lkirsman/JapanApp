@@ -65,6 +65,8 @@ export interface ItineraryItem {
   title: string
   note: string | null
   position: number
+  highlight: boolean // shown as a "featured" banner above the day's plan
+  icon: string | null // leading emoji for the banner
 }
 
 export interface ItineraryItemInput {
@@ -76,6 +78,8 @@ export interface ItineraryItemInput {
   title: string
   note?: string | null
   position?: number
+  highlight?: boolean
+  icon?: string | null
 }
 
 export interface FileAttachment {
