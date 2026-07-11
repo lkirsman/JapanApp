@@ -7,6 +7,7 @@ import { AddPlaceToDay } from '../components/AddPlaceToDay'
 import { ConfirmDialog } from '../components/ConfirmDialog'
 import { ErrorState } from '../components/ErrorState'
 import { FileList } from '../components/FileList'
+import { FileUploader } from '../components/FileUploader'
 import { Loading } from '../components/Loading'
 import { TipEditor } from '../components/TipEditor'
 import { ZoneImage } from '../components/ZoneImage'
@@ -92,12 +93,15 @@ export default function PlaceDetail() {
 
       <TipEditor tips={tips} parent={{ place_id: placeId }} title="Tips" />
 
-      {files.length > 0 && (
-        <section>
-          <h2 className="mb-3 section-title">Files</h2>
-          <FileList files={files} />
-        </section>
-      )}
+      <section>
+        <h2 className="mb-3 section-title">Files</h2>
+        {files.length > 0 && (
+          <div className="mb-3">
+            <FileList files={files} deletable={{ kind: 'place', id: placeId }} />
+          </div>
+        )}
+        <FileUploader parent={{ kind: 'place', id: placeId }} label="Attach a file" />
+      </section>
 
       <div className="flex gap-3 border-t border-line pt-6">
         <Link to={`/places/${placeId}/edit`} className="btn-ghost flex-1">

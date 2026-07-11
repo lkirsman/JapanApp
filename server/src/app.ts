@@ -13,7 +13,14 @@ import { zonesRouter } from './routes/zones.js'
 
 export function createApp() {
   const app = express()
-  app.use(express.json({ limit: '256kb' }))
+  // File uploads post a base64 blob, so /files needs a larger body than the rest.
+  const bigJson = express.json({ limit: '8mb' })
+  const smallJson = express.json({ limit: '256kb' })
+  app.use((req, res, next) =>
+    req.method === 'POST' && req.path === '/api/files'
+      ? bigJson(req, res, next)
+      : smallJson(req, res, next)
+  )
   app.use(authMiddleware)
 
   app.use('/api', healthRouter)

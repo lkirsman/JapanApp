@@ -4,6 +4,7 @@ import { CATEGORIES, CATEGORY_META } from '../api/types'
 import { EmptyState } from '../components/EmptyState'
 import { ErrorState } from '../components/ErrorState'
 import { FileList } from '../components/FileList'
+import { FileUploader } from '../components/FileUploader'
 import { Loading } from '../components/Loading'
 import { Schedule } from '../components/Schedule'
 import { TipEditor } from '../components/TipEditor'
@@ -93,12 +94,15 @@ export default function Zone() {
 
       <TipEditor tips={tips} parent={{ zone_id: zoneId }} title="Local tips" />
 
-      {files.length > 0 && (
-        <section>
-          <h2 className="mb-3 font-display text-lg font-extrabold">Files</h2>
-          <FileList files={files} />
-        </section>
-      )}
+      <section>
+        <h2 className="mb-3 font-display text-lg font-extrabold">Files</h2>
+        {files.length > 0 && (
+          <div className="mb-3">
+            <FileList files={files} deletable={{ kind: 'zone', id: zoneId }} />
+          </div>
+        )}
+        <FileUploader parent={{ kind: 'zone', id: zoneId }} label="Attach a file" />
+      </section>
     </div>
   )
 }

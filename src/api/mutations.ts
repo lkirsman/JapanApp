@@ -2,7 +2,16 @@
 // the other traveler's phone via refetch-on-focus (FR-018).
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from './client'
-import type { ItineraryItem, ItineraryItemInput, Place, PlaceInput, Tip } from './types'
+import type {
+  FileMeta,
+  FileParent,
+  FileUploadInput,
+  ItineraryItem,
+  ItineraryItemInput,
+  Place,
+  PlaceInput,
+  Tip,
+} from './types'
 
 function usePlaceInvalidation() {
   const qc = useQueryClient()
@@ -43,6 +52,28 @@ export function useDeletePlace(zoneId: string | undefined) {
       invalidate(zoneId)
       qc.invalidateQueries({ queryKey: ['trip-files'] }) // deleted place's files re-parent to trip
     },
+  })
+}
+
+function invalidateForFileParent(qc: ReturnType<typeof useQueryClient>, parent?: FileParent) {
+  qc.invalidateQueries({ queryKey: ['trip-files'] })
+  if (parent?.kind === 'zone') qc.invalidateQueries({ queryKey: ['zone', parent.id] })
+  if (parent?.kind === 'place') qc.invalidateQueries({ queryKey: ['place', parent.id] })
+}
+
+export function useUploadFile() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: FileUploadInput) => api.post<{ file: FileMeta }>('/files', input),
+    onSuccess: (_data, input) => invalidateForFileParent(qc, input.parent),
+  })
+}
+
+export function useDeleteFile(parent?: FileParent) {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (fileId: string) => api.delete<void>(`/files/${fileId}`),
+    onSuccess: () => invalidateForFileParent(qc, parent),
   })
 }
 

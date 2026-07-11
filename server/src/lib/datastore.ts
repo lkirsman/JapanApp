@@ -106,6 +106,16 @@ export interface TipInput {
   place_id?: string | null
 }
 
+export interface FileInput {
+  trip_id?: string | null
+  zone_id?: string | null
+  place_id?: string | null
+  display_name: string
+  storage_path: string
+  mime_type: string
+  size_bytes: number
+}
+
 export type FileUrlResult = { url: string; expires_in: number } | 'FILE_MISSING'
 
 export interface DataStore {
@@ -141,8 +151,14 @@ export interface DataStore {
   listFiles(
     parent: { trip_id: string } | { zone_id: string } | { place_id: string }
   ): Promise<FileAttachment[]>
+  /** Every file for the trip regardless of parent (used by the Documents view). */
+  listAllFiles(): Promise<FileAttachment[]>
   countTripFiles(tripId: string): Promise<number>
   getFile(fileId: string): Promise<FileAttachment | null>
+  /** Store an uploaded blob and its metadata row. */
+  createFile(input: FileInput, bytes: Buffer): Promise<FileAttachment>
+  /** Delete the metadata row and its blob. Returns false if the row is missing. */
+  deleteFile(fileId: string): Promise<boolean>
   /** Move a place's files to the trip (used before place deletion — no silent file loss). */
   reparentFilesToTrip(placeId: string, tripId: string): Promise<void>
   /** Resolve an openable URL for the blob, or FILE_MISSING when the row exists but the blob is gone. */

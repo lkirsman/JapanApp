@@ -10,6 +10,7 @@ import type {
   Category,
   DataStore,
   FileAttachment,
+  FileInput,
   FileUrlResult,
   ItineraryItem,
   ItineraryItemInput,
@@ -55,6 +56,8 @@ export function createMemoryStore(initial?: MemoryData): DataStore {
   // deep clone so mutations never touch the caller's fixture or the JSON module cache
   const db: MemoryData = structuredClone(initial ?? loadPlaceholderData())
   db.itinerary ??= [] // optional in older fixtures
+  // uploaded blobs live in memory only (dev/tests); seeded samples come from public/
+  const blobs = new Map<string, { bytes: Buffer; mime: string }>()
 
   const emptyCounts = (): Record<Category, number> =>
     Object.fromEntries(CATEGORIES.map((c) => [c, 0])) as Record<Category, number>
@@ -209,12 +212,40 @@ export function createMemoryStore(initial?: MemoryData): DataStore {
       return db.files.filter((f) => f.place_id === parent.place_id)
     },
 
+    async listAllFiles() {
+      return db.files.map((f) => structuredClone(f))
+    },
+
     async countTripFiles(tripId) {
       return db.files.filter((f) => f.trip_id === tripId).length
     },
 
     async getFile(fileId) {
       return db.files.find((f) => f.id === fileId) ?? null
+    },
+
+    async createFile(input: FileInput, bytes: Buffer) {
+      const file: FileAttachment = {
+        id: randomUUID(),
+        trip_id: input.trip_id ?? null,
+        zone_id: input.zone_id ?? null,
+        place_id: input.place_id ?? null,
+        display_name: input.display_name,
+        storage_path: input.storage_path,
+        mime_type: input.mime_type,
+        size_bytes: input.size_bytes,
+      }
+      db.files.push(file)
+      blobs.set(file.id, { bytes, mime: file.mime_type })
+      return structuredClone(file)
+    },
+
+    async deleteFile(fileId) {
+      const idx = db.files.findIndex((f) => f.id === fileId)
+      if (idx === -1) return false
+      db.files.splice(idx, 1)
+      blobs.delete(fileId)
+      return true
     },
 
     async reparentFilesToTrip(placeId, tripId) {
@@ -227,7 +258,12 @@ export function createMemoryStore(initial?: MemoryData): DataStore {
     },
 
     async getFileUrl(file): Promise<FileUrlResult> {
-      // memory mode serves samples statically from public/; missing file on
+      // uploaded blobs are held in memory → serve as a data URL (dev/tests)
+      const blob = blobs.get(file.id)
+      if (blob) {
+        return { url: `data:${blob.mime};base64,${blob.bytes.toString('base64')}`, expires_in: 300 }
+      }
+      // seeded samples are served statically from public/; missing file on
       // disk = the FILE_MISSING edge case from the contract
       const abs = path.join(process.cwd(), 'public', file.storage_path)
       if (!existsSync(abs)) return 'FILE_MISSING'

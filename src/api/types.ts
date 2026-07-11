@@ -60,6 +60,22 @@ export interface FileMeta {
   size_bytes: number
 }
 
+export type FileParent =
+  | { kind: 'trip' }
+  | { kind: 'zone'; id: string }
+  | { kind: 'place'; id: string }
+
+export interface TripDocument extends FileMeta {
+  attached_to: { kind: 'trip' | 'zone' | 'place'; id: string; name: string }
+}
+
+export interface FileUploadInput {
+  parent: FileParent
+  display_name: string
+  mime_type: string
+  data_base64: string
+}
+
 export interface ZoneDetail {
   zone: {
     id: string

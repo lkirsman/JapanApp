@@ -6,6 +6,7 @@ import type {
   Category,
   DataStore,
   FileAttachment,
+  FileInput,
   FileUrlResult,
   ItineraryItem,
   ItineraryItemInput,
@@ -213,12 +214,56 @@ export function createSupabaseStore(): DataStore {
       return (res.data as FileAttachment[]) ?? []
     },
 
+    async listAllFiles() {
+      const { data } = await db
+        .from('files')
+        .select('id,trip_id,zone_id,place_id,display_name,storage_path,mime_type,size_bytes')
+        .order('created_at', { ascending: true })
+      return (data as FileAttachment[]) ?? []
+    },
+
     async countTripFiles(tripId) {
       const { count } = await db
         .from('files')
         .select('id', { count: 'exact', head: true })
         .eq('trip_id', tripId)
       return count ?? 0
+    },
+
+    async createFile(input: FileInput, bytes: Buffer) {
+      const up = await db.storage
+        .from(FILES_BUCKET)
+        .upload(input.storage_path, bytes, { contentType: input.mime_type, upsert: false })
+      if (up.error) throw new Error(`storage upload failed: ${up.error.message}`)
+      const row = {
+        id: randomUUID(),
+        trip_id: input.trip_id ?? null,
+        zone_id: input.zone_id ?? null,
+        place_id: input.place_id ?? null,
+        display_name: input.display_name,
+        storage_path: input.storage_path,
+        mime_type: input.mime_type,
+        size_bytes: input.size_bytes,
+      }
+      const { data, error } = await db.from('files').insert(row).select().single()
+      if (error) {
+        // don't leave an orphan blob if the row insert fails
+        await db.storage.from(FILES_BUCKET).remove([input.storage_path])
+        throw new Error(error.message)
+      }
+      return data as FileAttachment
+    },
+
+    async deleteFile(fileId) {
+      const { data: file } = await db
+        .from('files')
+        .select('storage_path')
+        .eq('id', fileId)
+        .maybeSingle()
+      if (!file) return false
+      await db.storage.from(FILES_BUCKET).remove([(file as { storage_path: string }).storage_path])
+      const { data } = await db.from('files').delete().eq('id', fileId).select('id')
+      return (data?.length ?? 0) > 0
     },
 
     async getFile(fileId) {
