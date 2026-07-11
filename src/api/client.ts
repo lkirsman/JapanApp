@@ -1,0 +1,55 @@
+// Typed API client: bearer access code on every call, error-envelope
+// normalization, 401 → back to the gate.
+export const ACCESS_CODE_KEY = 'trip_access_code'
+
+export class ApiError extends Error {
+  constructor(
+    public status: number,
+    public code: string,
+    message: string,
+    public details?: string[]
+  ) {
+    super(message)
+  }
+}
+
+export const getAccessCode = () => localStorage.getItem(ACCESS_CODE_KEY)
+export const setAccessCode = (code: string) => localStorage.setItem(ACCESS_CODE_KEY, code)
+export const clearAccessCode = () => localStorage.removeItem(ACCESS_CODE_KEY)
+
+async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
+  const code = getAccessCode()
+  let res: Response
+  try {
+    res = await fetch(`/api${path}`, {
+      ...init,
+      headers: {
+        ...(init.body ? { 'Content-Type': 'application/json' } : {}),
+        ...(code ? { Authorization: `Bearer ${code}` } : {}),
+        ...init.headers,
+      },
+    })
+  } catch {
+    throw new ApiError(0, 'NETWORK', 'No connection — check your internet and retry')
+  }
+  if (res.status === 204) return undefined as T
+  const body = await res.json().catch(() => null)
+  if (!res.ok) {
+    const err = body?.error ?? {}
+    if (res.status === 401 && !path.startsWith('/auth/')) {
+      clearAccessCode()
+      window.location.assign('/gate')
+    }
+    throw new ApiError(res.status, err.code ?? 'INTERNAL', err.message ?? 'Request failed', err.details)
+  }
+  return body as T
+}
+
+export const api = {
+  get: <T>(path: string) => request<T>(path),
+  post: <T>(path: string, data: unknown) =>
+    request<T>(path, { method: 'POST', body: JSON.stringify(data) }),
+  patch: <T>(path: string, data: unknown) =>
+    request<T>(path, { method: 'PATCH', body: JSON.stringify(data) }),
+  delete: <T>(path: string) => request<T>(path, { method: 'DELETE' }),
+}

@@ -1,0 +1,246 @@
+{
+  "trip": {
+    "id": "trip-japan",
+    "name": "Yuval & Luz in Japan",
+    "start_date": "2026-10-05",
+    "end_date": "2026-10-24",
+    "description": "PLACEHOLDER trip skeleton — edit this file (or use the app) to replace sample content with the real plan. Loaded by the in-memory datastore until infrastructure is activated."
+  },
+  "steps": [
+    { "id": "step-1", "trip_id": "trip-japan", "zone_id": "zone-tokyo", "position": 1, "start_date": "2026-10-05", "end_date": "2026-10-10" },
+    { "id": "step-2", "trip_id": "trip-japan", "zone_id": "zone-hakone", "position": 2, "start_date": "2026-10-10", "end_date": "2026-10-12" },
+    { "id": "step-3", "trip_id": "trip-japan", "zone_id": "zone-kyoto", "position": 3, "start_date": "2026-10-12", "end_date": "2026-10-17" },
+    { "id": "step-4", "trip_id": "trip-japan", "zone_id": "zone-osaka", "position": 4, "start_date": "2026-10-17", "end_date": "2026-10-21" },
+    { "id": "step-5", "trip_id": "trip-japan", "zone_id": "zone-tokyo", "position": 5, "start_date": "2026-10-21", "end_date": "2026-10-24" }
+  ],
+  "zones": [
+    {
+      "id": "zone-tokyo",
+      "name": "Tokyo",
+      "name_ja": "東京",
+      "summary": "First and last stop. Placeholder: neighborhoods we care about — Shinjuku, Shibuya, Asakusa."
+    },
+    {
+      "id": "zone-hakone",
+      "name": "Hakone",
+      "name_ja": "箱根",
+      "summary": "Onsen break with (hopefully) Fuji views. Placeholder summary."
+    },
+    {
+      "id": "zone-kyoto",
+      "name": "Kyoto",
+      "name_ja": "京都",
+      "summary": "Temples, gardens and old streets. Placeholder summary."
+    },
+    {
+      "id": "zone-osaka",
+      "name": "Osaka",
+      "name_ja": "大阪",
+      "summary": "Food capital. Placeholder summary."
+    }
+  ],
+  "places": [
+    {
+      "id": "place-tokyo-hotel",
+      "zone_id": "zone-tokyo",
+      "category": "hotel",
+      "name": "Placeholder Hotel Shinjuku",
+      "name_ja": "新宿ホテル",
+      "description": "PLACEHOLDER — replace with the real booking. Check-in 15:00, check-out 11:00.",
+      "address": "1-2-3 Nishi-Shinjuku, Shinjuku-ku, Tokyo",
+      "links": [{ "label": "Booking", "url": "https://example.com/booking" }]
+    },
+    {
+      "id": "place-tokyo-teamlab",
+      "zone_id": "zone-tokyo",
+      "category": "attraction",
+      "name": "teamLab Planets",
+      "name_ja": "チームラボプラネッツ",
+      "description": "PLACEHOLDER — digital art museum in Toyosu. Book tickets ~2 weeks ahead; go barefoot, wear shorts.",
+      "address": "6-1-16 Toyosu, Koto-ku, Tokyo",
+      "links": [{ "label": "Tickets", "url": "https://example.com/teamlab" }]
+    },
+    {
+      "id": "place-tokyo-sensoji",
+      "zone_id": "zone-tokyo",
+      "category": "attraction",
+      "name": "Senso-ji Temple",
+      "name_ja": "浅草寺",
+      "description": "PLACEHOLDER — Tokyo's oldest temple, in Asakusa. Go early (before 09:00) to beat the crowds on Nakamise street.",
+      "address": "2-3-1 Asakusa, Taito-ku, Tokyo",
+      "links": []
+    },
+    {
+      "id": "place-tokyo-ramen",
+      "zone_id": "zone-tokyo",
+      "category": "food",
+      "name": "Placeholder Ramen Bar",
+      "name_ja": "ラーメン屋",
+      "description": "PLACEHOLDER — the ramen place we saved. Ticket machine at the entrance, cash only.",
+      "address": "Shinjuku, Tokyo",
+      "links": [{ "label": "Tabelog", "url": "https://example.com/ramen" }]
+    },
+    {
+      "id": "place-tokyo-coffee",
+      "zone_id": "zone-tokyo",
+      "category": "food",
+      "name": "Placeholder Kissaten Coffee",
+      "name_ja": "喫茶店",
+      "description": "PLACEHOLDER — old-school Japanese coffee house for a slow morning.",
+      "address": "Shibuya, Tokyo",
+      "links": []
+    },
+    {
+      "id": "place-tokyo-donki",
+      "zone_id": "zone-tokyo",
+      "category": "shopping",
+      "name": "Don Quijote Shibuya",
+      "name_ja": "ドン・キホーテ",
+      "description": "PLACEHOLDER — chaotic everything-store; good for souvenirs and snacks. Tax-free counter with passport.",
+      "address": "Shibuya, Tokyo",
+      "links": []
+    },
+    {
+      "id": "place-hakone-ryokan",
+      "zone_id": "zone-hakone",
+      "category": "hotel",
+      "name": "Placeholder Ryokan with Onsen",
+      "name_ja": "旅館",
+      "description": "PLACEHOLDER — traditional inn, dinner included (kaiseki). Tattoo policy: check private bath option.",
+      "address": "Hakone, Kanagawa",
+      "links": [{ "label": "Reservation", "url": "https://example.com/ryokan" }]
+    },
+    {
+      "id": "place-hakone-openair",
+      "zone_id": "zone-hakone",
+      "category": "attraction",
+      "name": "Hakone Open-Air Museum",
+      "name_ja": "彫刻の森美術館",
+      "description": "PLACEHOLDER — sculptures in the mountains, Picasso pavilion, foot bath.",
+      "address": "Ninotaira, Hakone",
+      "links": []
+    },
+    {
+      "id": "place-kyoto-hotel",
+      "zone_id": "zone-kyoto",
+      "category": "hotel",
+      "name": "Placeholder Machiya Stay",
+      "name_ja": "町家",
+      "description": "PLACEHOLDER — restored townhouse near Gion.",
+      "address": "Higashiyama, Kyoto",
+      "links": []
+    },
+    {
+      "id": "place-kyoto-fushimi",
+      "zone_id": "zone-kyoto",
+      "category": "attraction",
+      "name": "Fushimi Inari Shrine",
+      "name_ja": "伏見稲荷大社",
+      "description": "PLACEHOLDER — the thousand torii gates. Sunrise visit = no crowds; full loop ~2h.",
+      "address": "68 Fukakusa Yabunouchicho, Fushimi-ku, Kyoto",
+      "links": []
+    },
+    {
+      "id": "place-kyoto-arashiyama",
+      "zone_id": "zone-kyoto",
+      "category": "attraction",
+      "name": "Arashiyama Bamboo Grove",
+      "name_ja": "嵐山竹林",
+      "description": "PLACEHOLDER — combine with Tenryu-ji temple and the monkey park.",
+      "address": "Arashiyama, Kyoto",
+      "links": []
+    },
+    {
+      "id": "place-kyoto-matcha",
+      "zone_id": "zone-kyoto",
+      "category": "food",
+      "name": "Placeholder Matcha House",
+      "name_ja": "抹茶屋",
+      "description": "PLACEHOLDER — matcha everything; expect a queue after 11:00.",
+      "address": "Gion, Kyoto",
+      "links": []
+    },
+    {
+      "id": "place-kyoto-market",
+      "zone_id": "zone-kyoto",
+      "category": "shopping",
+      "name": "Nishiki Market",
+      "name_ja": "錦市場",
+      "description": "PLACEHOLDER — 'Kyoto's kitchen'. Knives, pickles, street snacks. No eating while walking.",
+      "address": "Nishikikoji-dori, Nakagyo-ku, Kyoto",
+      "links": []
+    },
+    {
+      "id": "place-osaka-hotel",
+      "zone_id": "zone-osaka",
+      "category": "hotel",
+      "name": "Placeholder Hotel Namba",
+      "name_ja": "難波ホテル",
+      "description": "PLACEHOLDER — near Dotonbori.",
+      "address": "Namba, Osaka",
+      "links": []
+    },
+    {
+      "id": "place-osaka-dotonbori",
+      "zone_id": "zone-osaka",
+      "category": "attraction",
+      "name": "Dotonbori at night",
+      "name_ja": "道頓堀",
+      "description": "PLACEHOLDER — neon canal walk, Glico sign photo.",
+      "address": "Dotonbori, Chuo-ku, Osaka",
+      "links": []
+    },
+    {
+      "id": "place-osaka-okonomiyaki",
+      "zone_id": "zone-osaka",
+      "category": "food",
+      "name": "Placeholder Okonomiyaki Grill",
+      "name_ja": "お好み焼き",
+      "description": "PLACEHOLDER — the okonomiyaki spot we bookmarked; also try takoyaki nearby.",
+      "address": "Dotonbori, Osaka",
+      "links": []
+    }
+  ],
+  "tips": [
+    { "id": "tip-tokyo-1", "zone_id": "zone-tokyo", "place_id": null, "body": "PLACEHOLDER — Get a Suica/Pasmo in Apple/Google Wallet for all metro and convenience stores." },
+    { "id": "tip-tokyo-2", "zone_id": "zone-tokyo", "place_id": null, "body": "PLACEHOLDER — Trash cans are rare: carry a small bag for your garbage." },
+    { "id": "tip-hakone-1", "zone_id": "zone-hakone", "place_id": null, "body": "PLACEHOLDER — Hakone Free Pass covers the loop (train, cable car, ropeway, boat)." },
+    { "id": "tip-kyoto-1", "zone_id": "zone-kyoto", "place_id": null, "body": "PLACEHOLDER — Buses get packed; the subway + walking is often faster." },
+    { "id": "tip-osaka-1", "zone_id": "zone-osaka", "place_id": null, "body": "PLACEHOLDER — Stand on the RIGHT on escalators in Osaka (opposite of Tokyo)." },
+    { "id": "tip-teamlab-1", "zone_id": null, "place_id": "place-tokyo-teamlab", "body": "PLACEHOLDER — Lockers available; you will walk in water up to your knees." },
+    { "id": "tip-fushimi-1", "zone_id": null, "place_id": "place-kyoto-fushimi", "body": "PLACEHOLDER — Open 24h; sunrise or after 17:00 for photos without crowds." },
+    { "id": "tip-ryokan-1", "zone_id": null, "place_id": "place-hakone-ryokan", "body": "PLACEHOLDER — Dinner is served early (~18:00); arrive before 17:00." }
+  ],
+  "files": [
+    {
+      "id": "file-flights",
+      "trip_id": "trip-japan",
+      "zone_id": null,
+      "place_id": null,
+      "display_name": "Flight booking (placeholder)",
+      "storage_path": "placeholder-files/flight-booking.pdf",
+      "mime_type": "application/pdf",
+      "size_bytes": 0
+    },
+    {
+      "id": "file-kyoto-map",
+      "trip_id": null,
+      "zone_id": "zone-kyoto",
+      "place_id": null,
+      "display_name": "Kyoto walking map (placeholder)",
+      "storage_path": "placeholder-files/kyoto-walking-map.svg",
+      "mime_type": "image/svg+xml",
+      "size_bytes": 0
+    },
+    {
+      "id": "file-ryokan-res",
+      "trip_id": null,
+      "zone_id": null,
+      "place_id": "place-hakone-ryokan",
+      "display_name": "Ryokan reservation (placeholder)",
+      "storage_path": "placeholder-files/hotel-reservation.pdf",
+      "mime_type": "application/pdf",
+      "size_bytes": 0
+    }
+  ]
+}

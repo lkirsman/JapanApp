@@ -1,0 +1,50 @@
+# Yuval & Luz in Japan 日本の旅
+
+A private, mobile-first trip companion for our Japan trip: browse hotels, attractions, food & cafes, shopping and other places by zone; see the journey as a timeline with today's stop highlighted; open collected documents; and add/edit/delete places and tips on the fly.
+
+Built from the spec in [specs/001-japan-trip-app/](specs/001-japan-trip-app/) (spec → plan → tasks → implementation).
+
+## Stack
+
+- **Frontend**: React 18 + Vite + TypeScript, Tailwind CSS (Japanese-inspired design system), React Router, TanStack Query
+- **Backend**: Node.js + Express — served locally via `server/dev.ts`, in production as one Vercel serverless function ([api/index.ts](api/index.ts))
+- **Data**: swappable datastore behind [server/src/lib/datastore.ts](server/src/lib/datastore.ts)
+  - `DATA_BACKEND=memory` (**current**): placeholder data from [server/src/data/placeholder-data.json](server/src/data/placeholder-data.json), sample files from `public/placeholder-files/`. Edits work but reset when the server restarts.
+  - `DATA_BACKEND=supabase` (**Phase 8, not yet configured**): Supabase Postgres + Storage, free tier, $0.
+
+## Run it (placeholder mode — no accounts, no infra)
+
+```
+npm install
+npm run dev        # frontend on http://localhost:3000, API on :3001
+```
+
+Access code: whatever `TRIP_ACCESS_CODE` is in `.env.local` (default dev fallback: `japan2026`). Both travelers use the same code.
+
+```
+npm test           # 40 tests: API routes (supertest) + UI components (RTL)
+npm run lint       # ESLint
+npm run build      # production bundle (~86 KB gzip JS)
+```
+
+## Editing the trip content
+
+- **In the app**: add/edit/delete places and tips from any screen (persists until server restart while in placeholder mode).
+- **The source of truth for now**: edit [server/src/data/placeholder-data.json](server/src/data/placeholder-data.json) — replace the PLACEHOLDER entries with the real plan. This same file will be seeded into Supabase in Phase 8, so curating it is not throwaway work.
+- Sample files live in `public/placeholder-files/`; regenerate the PDFs with `node scripts/make-placeholder-files.mjs`.
+
+## Infrastructure activation (Phase 8 — deferred)
+
+When ready (see [specs/001-japan-trip-app/tasks.md](specs/001-japan-trip-app/tasks.md) T055–T063 and [quickstart.md](specs/001-japan-trip-app/quickstart.md)):
+
+1. Create the free Supabase project + private `trip-files` bucket, apply `supabase/migrations/`.
+2. Implement/enable `datastore.supabase.ts`, set `DATA_BACKEND=supabase` + `SUPABASE_URL` + `SUPABASE_SERVICE_KEY`.
+3. Seed the curated data and upload the real files.
+4. `vercel deploy --prod` (Hobby, $0) — [vercel.json](vercel.json) already routes `/api/*` and runs a daily cron on `/api/health` to keep Supabase from pausing.
+
+**Cost**: $0 — Vercel Hobby and Supabase Free are hard-capped free tiers, no credit card. Budget ceiling for the whole project: $5.
+
+## Notes
+
+- The access code is a convenience lock for a private two-person app, not serious security. Don't reuse a password you care about.
+- All API data flows through the Express backend; the browser never talks to the database directly.

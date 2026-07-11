@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-paper font-body text-sumi antialiased;
+  }
+}
+
+@layer components {
+  /* thin horizontal rule used as a quiet divider (ma) */
+  .rule {
+    @apply border-t border-sand;
+  }
+  .btn {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors;
+  }
+  .btn-primary {
+    @apply btn bg-shu text-paper active:bg-shu/90;
+  }
+  .btn-ghost {
+    @apply btn border border-sand bg-transparent text-sumi active:bg-sand/50;
+  }
+  .btn-danger {
+    @apply btn border border-shu/40 text-shu active:bg-shu/10;
+  }
+  .field {
+    @apply w-full rounded-md border border-sand bg-white/70 px-3 py-2.5 text-base text-sumi outline-none focus:border-shu;
+  }
+  .label {
+    @apply mb-1 block text-xs font-medium uppercase tracking-wider text-fog;
+  }
+}

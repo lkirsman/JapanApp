@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" font-family="sans-serif">
+  <rect width="600" height="400" fill="#f8f4ed"/>
+  <text x="30" y="48" font-size="26" fill="#201d1a" font-weight="bold">Kyoto walking map 京都</text>
+  <text x="30" y="74" font-size="13" fill="#6f6a62">PLACEHOLDER sample image — replace with your real map in Phase 8</text>
+  <path d="M60 340 C 160 300, 200 220, 300 200 S 480 140, 540 90" stroke="#c5442d" stroke-width="4" fill="none" stroke-dasharray="10 6"/>
+  <circle cx="60" cy="340" r="10" fill="#c5442d"/>
+  <text x="78" y="345" font-size="14" fill="#201d1a">Fushimi Inari 伏見稲荷</text>
+  <circle cx="300" cy="200" r="10" fill="#c5442d"/>
+  <text x="318" y="205" font-size="14" fill="#201d1a">Gion 祇園</text>
+  <circle cx="540" cy="90" r="10" fill="#c5442d"/>
+  <text x="380" y="70" font-size="14" fill="#201d1a">Arashiyama 嵐山</text>
+</svg>
