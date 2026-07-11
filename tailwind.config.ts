@@ -13,6 +13,7 @@ export default {
         line: '#e7e9ee',
         brand: {
           DEFAULT: '#ff5a4d',
+          400: '#ff8a7d',
           600: '#f0392a',
           700: '#d92c1e',
         },

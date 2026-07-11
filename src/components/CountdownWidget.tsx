@@ -37,7 +37,7 @@ export function CountdownWidget({ flight, now }: { flight: FlightInfo; now?: Dat
   const left = timeUntil(target, tick)
 
   return (
-    <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-brand to-brand-600 p-5 text-white shadow-card">
+    <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-brand-400 to-brand p-5 text-white shadow-card">
       <div className="flex items-center justify-between">
         <p className="text-xs font-bold uppercase tracking-wide text-white/80">
           {left.done ? 'Takeoff' : 'Countdown to takeoff'}
