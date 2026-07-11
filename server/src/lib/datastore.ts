@@ -116,6 +116,9 @@ export interface DataStore {
   reparentFilesToTrip(placeId: string, tripId: string): Promise<void>
   /** Resolve an openable URL for the blob, or FILE_MISSING when the row exists but the blob is gone. */
   getFileUrl(file: FileAttachment): Promise<FileUrlResult>
+
+  /** Free-text search across places, zones, and tips (case-insensitive). */
+  search(query: string): Promise<{ places: Place[]; zones: Zone[]; tips: Tip[] }>
 }
 
 let store: DataStore | null = null

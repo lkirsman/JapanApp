@@ -1,6 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
 import { api } from './client'
-import type { Category, FileMeta, PlaceDetail, PlaceListItem, TripBundle, ZoneDetail } from './types'
+import type {
+  Category,
+  FileMeta,
+  PlaceDetail,
+  PlaceListItem,
+  SearchResult,
+  TripBundle,
+  ZoneDetail,
+} from './types'
 
 export const useTrip = () =>
   useQuery({ queryKey: ['trip'], queryFn: () => api.get<TripBundle>('/trip') })
@@ -24,3 +32,10 @@ export const usePlace = (placeId: string) =>
 
 export const useTripFiles = () =>
   useQuery({ queryKey: ['trip-files'], queryFn: () => api.get<{ files: FileMeta[] }>('/files') })
+
+export const useSearch = (query: string) =>
+  useQuery({
+    queryKey: ['search', query],
+    queryFn: () => api.get<{ results: SearchResult[] }>(`/search?q=${encodeURIComponent(query)}`),
+    enabled: query.trim().length >= 2,
+  })

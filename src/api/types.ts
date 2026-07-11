@@ -117,3 +117,11 @@ export interface PlaceInput {
   links?: PlaceLink[]
   image_url?: string | null
 }
+
+export interface SearchResult {
+  type: 'place' | 'zone' | 'tip'
+  id: string
+  title: string
+  subtitle: string
+  href: string
+}

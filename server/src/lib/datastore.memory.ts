@@ -174,5 +174,17 @@ export function createMemoryStore(initial?: MemoryData): DataStore {
       if (!existsSync(abs)) return 'FILE_MISSING'
       return { url: `/${file.storage_path.replace(/\\/g, '/')}`, expires_in: 300 }
     },
+
+    async search(query) {
+      const q = query.trim().toLowerCase()
+      const has = (s?: string | null) => !!s && s.toLowerCase().includes(q)
+      return {
+        places: db.places.filter(
+          (p) => has(p.name) || has(p.name_ja) || has(p.description) || has(p.address)
+        ),
+        zones: db.zones.filter((z) => has(z.name) || has(z.name_ja) || has(z.summary)),
+        tips: db.tips.filter((t) => has(t.body)),
+      }
+    },
   }
 }

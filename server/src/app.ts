@@ -5,6 +5,7 @@ import { authRouter } from './routes/auth.js'
 import { filesRouter } from './routes/files.js'
 import { healthRouter } from './routes/health.js'
 import { placesRouter } from './routes/places.js'
+import { searchRouter } from './routes/search.js'
 import { tipsRouter } from './routes/tips.js'
 import { tripRouter } from './routes/trip.js'
 import { zonesRouter } from './routes/zones.js'
@@ -21,6 +22,7 @@ export function createApp() {
   app.use('/api', placesRouter)
   app.use('/api', tipsRouter)
   app.use('/api', filesRouter)
+  app.use('/api', searchRouter)
 
   app.use('/api', (_req, _res, next) => next(notFound('Endpoint')))
   app.use(errorMiddleware)

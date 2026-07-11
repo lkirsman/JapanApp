@@ -189,5 +189,28 @@ export function createSupabaseStore(): DataStore {
       if (error || !data?.signedUrl) return 'FILE_MISSING'
       return { url: data.signedUrl, expires_in: SIGNED_URL_TTL }
     },
+
+    async search(query) {
+      // strip chars that would break PostgREST's or() filter grammar
+      const term = query.replace(/[%,()]/g, ' ').trim()
+      if (!term) return { places: [], zones: [], tips: [] }
+      const like = `%${term}%`
+      const [places, zones, tips] = await Promise.all([
+        db
+          .from('places')
+          .select('id,zone_id,category,name,name_ja,description,address,links,image_url')
+          .or(`name.ilike.${like},name_ja.ilike.${like},description.ilike.${like},address.ilike.${like}`),
+        db
+          .from('zones')
+          .select('id,name,name_ja,summary,image_url,lat,lng')
+          .or(`name.ilike.${like},name_ja.ilike.${like},summary.ilike.${like}`),
+        db.from('tips').select('id,zone_id,place_id,body').ilike('body', like),
+      ])
+      return {
+        places: (places.data as Place[]) ?? [],
+        zones: (zones.data as Zone[]) ?? [],
+        tips: (tips.data as Tip[]) ?? [],
+      }
+    },
   }
 }

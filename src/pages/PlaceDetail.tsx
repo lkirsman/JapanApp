@@ -9,6 +9,7 @@ import { FileList } from '../components/FileList'
 import { Loading } from '../components/Loading'
 import { TipEditor } from '../components/TipEditor'
 import { ZoneImage } from '../components/ZoneImage'
+import { placeMapsUrl } from '../lib/maps'
 
 export default function PlaceDetail() {
   const { placeId = '' } = useParams()
@@ -44,12 +45,26 @@ export default function PlaceDetail() {
 
       {place.description && <p className="text-sm leading-relaxed">{place.description}</p>}
 
-      {place.address && (
-        <div>
-          <h2 className="section-title">Address</h2>
-          <p className="mt-1 text-sm">{place.address}</p>
-        </div>
-      )}
+      <div>
+        {place.address && (
+          <>
+            <h2 className="section-title">Address</h2>
+            <p className="mt-1 text-sm">{place.address}</p>
+          </>
+        )}
+        <a
+          href={placeMapsUrl(place.name, place.address)}
+          target="_blank"
+          rel="noreferrer noopener"
+          className="btn-primary mt-3 w-full"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z" />
+            <circle cx="12" cy="10" r="2.5" />
+          </svg>
+          Directions
+        </a>
+      </div>
 
       {place.links.length > 0 && (
         <div>

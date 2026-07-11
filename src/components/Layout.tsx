@@ -1,18 +1,36 @@
 import type { ReactNode } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
-function TabIcon({ name, active }: { name: 'journey' | 'docs'; active: boolean }) {
-  const stroke = active ? '#ff5a4d' : '#6b7280'
-  if (name === 'journey') {
+type IconName = 'journey' | 'essentials' | 'docs'
+
+function TabIcon({ name, active }: { name: IconName; active: boolean }) {
+  const s = active ? '#ff5a4d' : '#6b7280'
+  const common = {
+    width: 22,
+    height: 22,
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: s,
+    strokeWidth: 2,
+    strokeLinecap: 'round' as const,
+    strokeLinejoin: 'round' as const,
+  }
+  if (name === 'journey')
     return (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg {...common}>
         <path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z" />
         <circle cx="12" cy="10" r="2.5" />
       </svg>
     )
-  }
+  if (name === 'essentials')
+    return (
+      <svg {...common}>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 8h.01M11 12h1v4h1" />
+      </svg>
+    )
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg {...common}>
       <path d="M14 3v4a1 1 0 0 0 1 1h4" />
       <path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z" />
     </svg>
@@ -21,10 +39,12 @@ function TabIcon({ name, active }: { name: 'journey' | 'docs'; active: boolean }
 
 export function Layout({ children }: { children: ReactNode }) {
   const { pathname } = useLocation()
-  const journeyActive = pathname === '/' || pathname.startsWith('/zones') || pathname.startsWith('/places')
+  const journeyActive =
+    pathname === '/' || pathname.startsWith('/zones') || pathname.startsWith('/places')
+  const essentialsActive = pathname.startsWith('/essentials')
   const docsActive = pathname.startsWith('/files')
 
-  const tab = (to: string, name: 'journey' | 'docs', label: string, active: boolean) => (
+  const tab = (to: string, name: IconName, label: string, active: boolean) => (
     <Link
       to={to}
       className={`flex min-h-14 flex-1 flex-col items-center justify-center gap-1 text-[11px] font-semibold ${
@@ -45,11 +65,22 @@ export function Layout({ children }: { children: ReactNode }) {
           </span>
           <span className="font-display text-lg font-extrabold tracking-tight">Japan</span>
         </Link>
+        <Link
+          to="/search"
+          aria-label="Search"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white text-ink active:scale-95"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="7" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+        </Link>
       </header>
       <main className="flex-1 px-5 pb-28 pt-1">{children}</main>
       <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-line bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-app px-6">
+        <div className="mx-auto flex max-w-app px-4">
           {tab('/', 'journey', 'Journey', journeyActive)}
+          {tab('/essentials', 'essentials', 'Essentials', essentialsActive)}
           {tab('/files', 'docs', 'Documents', docsActive)}
         </div>
       </nav>
