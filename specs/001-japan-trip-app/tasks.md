@@ -157,15 +157,15 @@ Per plan.md structure: Vite React SPA at repo root (`src/`), Node/Express backen
 
 **Purpose**: Configure the real infrastructure (Supabase DB + Storage, Vercel hosting) and swap the datastore — no feature code changes
 
-- [ ] T055 Create the Supabase free project, create private Storage bucket `trip-files`, fill `.env.local` with SUPABASE_URL / SUPABASE_SERVICE_KEY (per quickstart "Infrastructure activation"); add @supabase/supabase-js dependency
-- [ ] T056 Write and apply schema migration `supabase/migrations/0001_init.sql`: tables trips, journey_steps, zones, places, tips, files per data-model.md (uuid PKs, FKs with cascade rules, `unique(trip_id, position)`, tips/files `num_nonnulls(...) = 1` checks, `(zone_id, category)` index on places, `updated_at` trigger, deny-all RLS on every table)
-- [ ] T057 Supabase server client in `server/src/lib/supabase.ts` (service-role key from env, single shared client)
-- [ ] T058 Supabase datastore implementation in `server/src/lib/datastore.supabase.ts` fulfilling the T006 interface (reads, validated mutations, `getFileUrl` → 300 s signed URL with FILE_MISSING detection, `ping` → trivial select); register it in the T006 factory under `DATA_BACKEND=supabase`
-- [ ] T059 [P] Seed script `scripts/seed.ts` (`npm run seed`): loads `server/src/data/placeholder-data.json` content (by now curated into the real trip data) into Supabase, idempotent upserts
-- [ ] T060 [P] File upload script `scripts/seed-files.ts` (`npm run seed:files`): uploads the real pre-collected files from `supabase/seed/files/` to the bucket + inserts metadata rows (display_name, mime_type, size_bytes, parent association from a manifest JSON)
-- [ ] T061 Switch `DATA_BACKEND=supabase` locally: full test suite green, repeat quickstart V1–V4 smoke against Supabase-backed local run; confirm edits now persist across server restarts
-- [ ] T062 Production deploy: `vercel deploy --prod`, set env vars (TRIP_ACCESS_CODE, DATA_BACKEND=supabase, SUPABASE_*) in Vercel project, confirm daily cron hits /api/health and Supabase project stays active (research R3, quickstart V6)
-- [ ] T063 Run full quickstart validation V0–V6 on a real phone against the production URL; record pass/fail per scenario at the bottom of `specs/001-japan-trip-app/quickstart.md`
+- [ ] T055 ⚠️ USER STEP: Create the Supabase free project, create private Storage bucket `trip-files`, fill `.env.local` with SUPABASE_URL / SUPABASE_SERVICE_KEY (per quickstart "Infrastructure activation"). @supabase/supabase-js dependency already added.
+- [X] T056 Schema migration `supabase/migrations/0001_init.sql`: tables trips, journey_steps, zones, places, tips, files per data-model.md (TEXT PKs to preserve human-readable seed ids — see data-model note; FKs with cascade rules, `unique(trip_id, position)`, tips/files `num_nonnulls(...) = 1` checks, `(zone_id, category)` index, `updated_at` trigger, deny-all RLS on every table). Includes the added image_url/lat/lng columns.
+- [X] T057 Supabase server client in `server/src/lib/supabase.ts` (service-role key from env, single shared client, FILES_BUCKET constant)
+- [X] T058 Supabase datastore implementation in `server/src/lib/datastore.supabase.ts` fulfilling the T006 interface (reads, validated mutations, `getFileUrl` → 300 s signed URL with FILE_MISSING detection, `ping` → trivial select); registered in the T006 factory under `DATA_BACKEND=supabase`
+- [X] T059 [P] Seed script `scripts/seed.ts` (`npm run seed`): loads `server/src/data/placeholder-data.json` into Supabase, idempotent upserts, FK-safe order
+- [X] T060 [P] File upload script `scripts/seed-files.ts` (`npm run seed:files`): uploads blobs from `public/<storage_path>` to the bucket at the matching key (upsert)
+- [ ] T061 ⚠️ USER STEP: Switch `DATA_BACKEND=supabase` locally: run `npm run seed` + `npm run seed:files`, `npm run dev`, smoke quickstart V1–V4 against Supabase; confirm edits persist across server restarts
+- [ ] T062 ⚠️ USER STEP: Production deploy: `vercel deploy --prod`, set env vars (TRIP_ACCESS_CODE, DATA_BACKEND=supabase, SUPABASE_*) in Vercel project, confirm daily cron hits /api/health and Supabase project stays active (research R3, quickstart V6)
+- [ ] T063 ⚠️ USER STEP: Run full quickstart validation V0–V6 on a real phone against the production URL; record pass/fail per scenario at the bottom of `quickstart.md`
 
 ---
 
@@ -267,4 +267,4 @@ This is a two-person personal project; the practical split after Phase 2: one pe
 - T052 caveat: mobile audit done via 375px emulation + overflow checks; repeat on a real phone over LAN when convenient.
 - T053 caveat: bundle size verified small enough that code-splitting is unnecessary; full Lighthouse run deferred to the production URL (with T063).
 - T012 note: local dev uses `npm run dev` (tsx + Vite proxy) rather than `vercel dev`; `api/index.ts` + `vercel.json` are ready for Phase 8 deployment.
-- Phase 8 (T055-T063) intentionally NOT started - infrastructure activation deferred per user decision.
+- Phase 8 update (2026-07-11): all code written and compiling (T056-T060) — schema migration, Supabase client, Supabase datastore behind DATA_BACKEND=supabase, and both seed scripts. Remaining T055/T061/T062/T063 are USER STEPS requiring account creation + credentials (Supabase project, Vercel deploy) which the assistant cannot do. Flipping DATA_BACKEND=supabase with valid keys activates the whole thing with zero feature-code changes. Client bundle unchanged (supabase-js is server-only, dynamically imported).

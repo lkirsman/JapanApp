@@ -68,14 +68,14 @@ Perform on a real phone (or mobile emulation) against the deployed URL. During d
 1. Open the app URL in a private window → access screen appears; wrong code → clear error; correct code → Journey view. API calls without the code return 401 (verify: `curl -i https://<app>/api/trip` → 401).
 
 ### V1 — Browse by zone & category (US1, FR-002/003/004/012)
-1. From the Journey view tap a zone (e.g., Tokyo) → zone view shows zone tips and only categories that have entries; empty categories hidden or marked empty without breaking navigation.
-2. Open Restaurants & Cafes → list shows every seeded entry; open one → full details (name, JP name, description, address, links) plus its place-level tips.
+1. From the Journey view tap a map pin or a step card (e.g., Tokyo) → zone view shows zone tips and only categories that have entries; empty categories hidden without breaking navigation.
+2. Open Food & Cafés → list shows every seeded entry with thumbnail; open one → full details (name, description, address, links) plus its place-level tips.
 3. **Pass**: any seeded place reachable in ≤ 3 taps from app open, under 30 s (SC-001); no horizontal scrolling anywhere (SC-004).
 
 ### V2 — Journey visualization (US2, FR-005/006)
-1. Open the Journey (home) view → all steps in chronological order with zone names + dates, on one scrollable screen (SC-002).
-2. Tap a step → lands on that zone's view.
-3. Temporarily set a journey step's dates to include today (edit seed or DB row) → reload → that step is visually highlighted as current; steps before/after styled as past/future. Restore dates; with all dates in the future → no step highlighted (edge case).
+1. Open the Journey (home) view → the city map shows one numbered pin per city in visit order; below it the steps appear as a horizontal slider of photo cards with dates (SC-002).
+2. Tap a pin or a step card → lands on that zone's view.
+3. Temporarily set a journey step's dates to include today (edit seed or DB row) → reload → that step's card is highlighted with a "Now" badge and its city pin turns coral. Restore dates; with all dates in the future → no step highlighted (edge case).
 
 ### V3 — Edit on the fly (US3, FR-015..019, SC-008)
 1. From a zone, add a new restaurant (name + category + a note) using only the phone UI → appears immediately in that zone's Restaurants list; **time the flow: must be < 1 minute** (SC-008).

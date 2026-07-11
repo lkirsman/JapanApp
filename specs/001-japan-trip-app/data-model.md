@@ -2,7 +2,9 @@
 
 **Date**: 2026-07-11 | **Plan**: [plan.md](plan.md) | **Store**: Supabase Postgres (schema in `supabase/migrations/`)
 
-All tables use `id uuid primary key default gen_random_uuid()`, `created_at timestamptz default now()`, `updated_at timestamptz default now()` (trigger-maintained). Row Level Security: **deny-all for `anon` and `authenticated`** on every table — data is reachable only through the backend's service-role client.
+All tables use `id text primary key`, `created_at timestamptz default now()`, `updated_at timestamptz default now()` (trigger-maintained). Row Level Security: **deny-all for `anon` and `authenticated`** on every table — data is reachable only through the backend's service-role client.
+
+> **PK type note (2026-07-11):** primary keys are **TEXT**, not uuid. This lets the human-readable seed ids (`zone-tokyo`, `hotel-hakone-yutowa`, …) load verbatim from `placeholder-data.json`, while rows created in the app use `crypto.randomUUID()` values (also valid text). Both the in-memory and Supabase backends generate the id in JS on create, so ids are identical across backends. See `supabase/migrations/0001_init.sql`.
 
 ## Entity relationship overview
 
@@ -51,6 +53,8 @@ City or area grouping content (FR-002).
 | name_ja | text | optional Japanese name (e.g., "東京") — decorative per design language |
 | summary | text | optional |
 | image_url | text | optional http(s) photo URL (added 2026-07-11: booking-style visual cards); UI falls back to a styled block when absent/unloadable |
+| lat | double precision | optional latitude for the trip map pin (added 2026-07-11) |
+| lng | double precision | optional longitude for the trip map pin (added 2026-07-11) |
 
 ## places
 

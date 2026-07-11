@@ -128,10 +128,8 @@ export async function getDataStore(): Promise<DataStore> {
     const { createMemoryStore } = await import('./datastore.memory')
     store = createMemoryStore()
   } else if (backend === 'supabase') {
-    // Implemented in Phase 8 (infrastructure activation): datastore.supabase.ts
-    throw new Error(
-      'DATA_BACKEND=supabase is not configured yet — infrastructure activation is a later phase. Use DATA_BACKEND=memory.'
-    )
+    const { createSupabaseStore } = await import('./datastore.supabase')
+    store = createSupabaseStore()
   } else {
     throw new Error(`Unknown DATA_BACKEND "${backend}" (expected "memory" or "supabase")`)
   }
