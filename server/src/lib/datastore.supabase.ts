@@ -24,6 +24,28 @@ import { FILES_BUCKET, getSupabase } from './supabase.js'
 
 const SIGNED_URL_TTL = 300 // seconds
 
+// Columns added in migration 0004. If a deployment ships this code before that
+// migration is applied, Postgres/PostgREST reports an "undefined column" error;
+// we detect it and fall back to the pre-0004 shape so the itinerary still loads
+// (highlights are simply inert until the migration runs).
+const ITINERARY_BASE_COLS = 'id,trip_id,zone_id,place_id,day,start_time,title,note,position'
+const ITINERARY_COLS = `${ITINERARY_BASE_COLS},highlight,icon`
+
+function isMissingHighlightColumn(error: { code?: string; message?: string } | null): boolean {
+  if (!error) return false
+  // 42703 = undefined_column (select); PGRST204 = column not in schema cache (write)
+  return (
+    error.code === '42703' ||
+    error.code === 'PGRST204' ||
+    /\b(highlight|icon)\b/i.test(error.message ?? '')
+  )
+}
+
+/** Ensure the 0004 fields exist on a row that may predate the migration. */
+function withHighlightDefaults(row: Record<string, unknown>): ItineraryItem {
+  return { highlight: false, icon: null, ...row } as ItineraryItem
+}
+
 export function createSupabaseStore(): DataStore {
   const db = getSupabase()
 
@@ -125,18 +147,22 @@ export function createSupabaseStore(): DataStore {
     },
 
     async listItinerary(tripId) {
-      const { data } = await db
-        .from('itinerary_items')
-        .select('id,trip_id,zone_id,place_id,day,start_time,title,note,position,highlight,icon')
-        .eq('trip_id', tripId)
-        .order('day', { ascending: true })
-        .order('start_time', { ascending: true, nullsFirst: false })
-        .order('position', { ascending: true })
-      return (data as ItineraryItem[]) ?? []
+      const run = (cols: string) =>
+        db
+          .from('itinerary_items')
+          .select(cols)
+          .eq('trip_id', tripId)
+          .order('day', { ascending: true })
+          .order('start_time', { ascending: true, nullsFirst: false })
+          .order('position', { ascending: true })
+      let { data, error } = await run(ITINERARY_COLS)
+      if (error && isMissingHighlightColumn(error)) ({ data, error } = await run(ITINERARY_BASE_COLS))
+      if (error) throw new Error(error.message)
+      return (data ?? []).map((r) => withHighlightDefaults(r as unknown as Record<string, unknown>))
     },
 
     async createItineraryItem(input: ItineraryItemInput) {
-      const row = {
+      const base = {
         id: randomUUID(),
         trip_id: input.trip_id,
         zone_id: input.zone_id ?? null,
@@ -146,12 +172,13 @@ export function createSupabaseStore(): DataStore {
         title: input.title,
         note: input.note ?? null,
         position: input.position ?? 0,
-        highlight: input.highlight ?? false,
-        icon: input.icon ?? null,
       }
-      const { data, error } = await db.from('itinerary_items').insert(row).select().single()
+      const row = { ...base, highlight: input.highlight ?? false, icon: input.icon ?? null }
+      let { data, error } = await db.from('itinerary_items').insert(row).select().single()
+      if (error && isMissingHighlightColumn(error))
+        ({ data, error } = await db.from('itinerary_items').insert(base).select().single())
       if (error) throw new Error(error.message)
-      return data as ItineraryItem
+      return withHighlightDefaults(data as Record<string, unknown>)
     },
 
     async updateItineraryItem(itemId, patch) {
@@ -165,13 +192,17 @@ export function createSupabaseStore(): DataStore {
       if (patch.position !== undefined) fields.position = patch.position ?? 0
       if (patch.highlight !== undefined) fields.highlight = patch.highlight ?? false
       if (patch.icon !== undefined) fields.icon = patch.icon ?? null
-      const { data } = await db
-        .from('itinerary_items')
-        .update(fields)
-        .eq('id', itemId)
-        .select()
-        .maybeSingle()
-      return (data as ItineraryItem) ?? null
+      const run = (f: Record<string, unknown>) =>
+        db.from('itinerary_items').update(f).eq('id', itemId).select().maybeSingle()
+      let { data, error } = await run(fields)
+      if (error && isMissingHighlightColumn(error)) {
+        const rest = { ...fields }
+        delete rest.highlight
+        delete rest.icon
+        ;({ data, error } = await run(rest))
+      }
+      if (error) throw new Error(error.message)
+      return data ? withHighlightDefaults(data as Record<string, unknown>) : null
     },
 
     async deleteItineraryItem(itemId) {
