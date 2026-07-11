@@ -17,7 +17,7 @@ export function CurrencyCalculator() {
   return (
     <div className="rounded-3xl border border-line bg-white p-4 shadow-card">
       <div className="flex items-center justify-between">
-        <h3 className="font-display text-base font-extrabold">💱 Exchange calculator</h3>
+        <h3 className="font-display text-base font-extrabold">Exchange calculator</h3>
         {data && <span className="text-[11px] font-semibold text-muted">Rate · {data.date}</span>}
       </div>
 

@@ -335,6 +335,20 @@
       "image_url": null
     },
     {
+      "id": "attr-usj",
+      "zone_id": "zone-osaka",
+      "category": "attraction",
+      "name": "Universal Studios Japan",
+      "name_ja": "ユニバーサル・スタジオ・ジャパン",
+      "description": "Oct 8 — our full USJ day (Halloween season + the park's 25th anniversary). Tickets go on sale ~2 months ahead — expect Aug 8–14, 2026 — and you must buy the day they open: there are NO ticket booths at the park anymore (online only, via Klook). Get 2× Studio Pass + 2× Universal Express Pass Premium for Oct 8. The day-by-day plan is in the schedule; the complete guide we made is attached below.",
+      "address": "2-1-33 Sakurajima, Konohana Ward, Osaka",
+      "links": [
+        { "label": "Klook tickets", "url": "https://www.klook.com" },
+        { "label": "Official USJ site", "url": "https://www.usj.co.jp/en/" }
+      ],
+      "image_url": null
+    },
+    {
       "id": "attr-dotonbori",
       "zone_id": "zone-osaka",
       "category": "attraction",
@@ -436,7 +450,10 @@
     { "id": "tip-tokyo-trash", "zone_id": "zone-tokyo", "place_id": null, "body": "Trash cans are rare — carry a small bag for garbage." },
     { "id": "tip-yutowa-onsen", "zone_id": null, "place_id": "hotel-hakone-yutowa", "body": "Onsen etiquette: wash sitting down before entering the bath; towels stay out of the water." },
     { "id": "tip-gracery-godzilla", "zone_id": null, "place_id": "hotel-gracery", "body": "Ask for a high floor on the Godzilla side; the head 'roars' on schedule from the 8F terrace." },
-    { "id": "tip-fushimi-sunrise", "zone_id": null, "place_id": "attr-fushimi", "body": "Open 24h — sunrise or after 17:00 for photos without crowds." }
+    { "id": "tip-fushimi-sunrise", "zone_id": null, "place_id": "attr-fushimi", "body": "Open 24h — sunrise or after 17:00 for photos without crowds." },
+    { "id": "tip-usj-tickets", "zone_id": null, "place_id": "attr-usj", "body": "Buy tickets the day they open (~Aug 8–14 for Oct 8). No booths at the park since May 2025 — online only, via Klook (foreign-card friendly). Premium Express passes sell out first, especially in Halloween season." },
+    { "id": "tip-usj-express", "zone_id": null, "place_id": "attr-usj", "body": "Express Pass Premium: if offered as P25 (incl. Space Fantasy) vs P29, prefer P25. With Premium, Nintendo World entry is guaranteed at any time. Passes are non-refundable, non-changeable and personal — no sharing." },
+    { "id": "tip-usj-app", "zone_id": null, "place_id": "attr-usj", "body": "Download the official USJ app for wait times, show times and the map. You can exit any queue before boarding. Check the crowd forecast at usjreal.asumirai.info (A=empty, F=packed). Save tickets as PDF + QR screenshots — signal is bad near the park." }
   ],
   "itinerary": [
     { "id": "itin-bday-marker", "trip_id": "trip-japan", "zone_id": "zone-tokyo", "place_id": null, "day": "2026-09-20", "start_time": null, "title": "🎂 Luciana's Birthday", "note": "Two treats in one day (spa + Maguro Mart) both benefit from advance booking — lock the spa time first, then pick a Maguro Mart slot that leaves comfortable travel time between them.", "position": 0 },
@@ -446,7 +463,13 @@
     { "id": "itin-tokyo-ramen", "trip_id": "trip-japan", "zone_id": "zone-tokyo", "place_id": "food-tokyo-ramen", "day": "2026-09-21", "start_time": "20:00", "title": "Ramen night in Omoide Yokocho", "note": "Cash only.", "position": 0 },
     { "id": "itin-kyoto-fushimi", "trip_id": "trip-japan", "zone_id": "zone-kyoto", "place_id": "attr-fushimi", "day": "2026-10-04", "start_time": "07:30", "title": "Fushimi Inari at sunrise", "note": "Beat the crowds — full loop ~2h.", "position": 0 },
     { "id": "itin-kyoto-arashiyama", "trip_id": "trip-japan", "zone_id": "zone-kyoto", "place_id": "attr-arashiyama", "day": "2026-10-04", "start_time": "11:00", "title": "Arashiyama Bamboo Grove", "note": null, "position": 0 },
-    { "id": "itin-kyoto-free", "trip_id": "trip-japan", "zone_id": "zone-kyoto", "place_id": null, "day": "2026-10-04", "start_time": null, "title": "Coffee somewhere in Gion", "note": "No fixed time — wander.", "position": 0 }
+    { "id": "itin-kyoto-free", "trip_id": "trip-japan", "zone_id": "zone-kyoto", "place_id": null, "day": "2026-10-04", "start_time": null, "title": "Coffee somewhere in Gion", "note": "No fixed time — wander.", "position": 0 },
+    { "id": "itin-usj-gates", "trip_id": "trip-japan", "zone_id": "zone-osaka", "place_id": "attr-usj", "day": "2026-10-08", "start_time": "07:30", "title": "🎢 Universal Studios — at the gates", "note": "Take the JR Yumesaki line to Universal City (~15 min from Osaka Stn). Gates usually open before the official time. Sleep in Osaka the night before, not Kyoto.", "position": 0 },
+    { "id": "itin-usj-nintendo", "trip_id": "trip-japan", "zone_id": "zone-osaka", "place_id": "attr-usj", "day": "2026-10-08", "start_time": "09:00", "title": "Super Nintendo World (morning)", "note": "Do it as one block: Mario Kart, Mine Cart Madness, Yoshi, Power Up Band games, Kinopio's Cafe. Leaving the area = no re-entry, so finish everything first.", "position": 1 },
+    { "id": "itin-usj-noon", "trip_id": "trip-japan", "zone_id": "zone-osaka", "place_id": "attr-usj", "day": "2026-10-08", "start_time": "12:00", "title": "Split, then Jurassic Park & JAWS", "note": "Yuval: Flying Dinosaur, Hollywood Dream + Backdrop. Luciana: break / shopping. Together: Jurassic Park (sit mid-boat — you get wet) and JAWS (day version).", "position": 2 },
+    { "id": "itin-usj-hp", "trip_id": "trip-japan", "zone_id": "zone-osaka", "place_id": "attr-usj", "day": "2026-10-08", "start_time": "15:00", "title": "Wizarding World of Harry Potter", "note": "Castle walk, wand ceremony at Ollivanders, butterbeer, Hippogriff / Forbidden Journey by feel. Then Minions + the Waterworld show.", "position": 3 },
+    { "id": "itin-usj-halloween", "trip_id": "trip-japan", "zone_id": "zone-osaka", "place_id": "attr-usj", "day": "2026-10-08", "start_time": "18:00", "title": "Halloween evening (together)", "note": "Street zombies, Zombie de Dance, Resident Evil: Requiem – The Dive (walkthrough), Sadako's Curse, and close with JAWS: Red Alert. Quiet zones if needed: Nintendo World and the family area.", "position": 4 },
+    { "id": "itin-usj-dinner", "trip_id": "trip-japan", "zone_id": "zone-osaka", "place_id": "attr-usj", "day": "2026-10-08", "start_time": null, "title": "Dinner at Universal CityWalk", "note": "After the park closes — grab dinner at CityWalk on the way back to the train.", "position": 5 }
   ],
   "files": [
     {
