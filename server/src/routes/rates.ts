@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { asyncHandler } from '../lib/errors.js'
+import { getDataStore } from '../lib/datastore.js'
 import { getRates } from '../services/rates.js'
 
 export const ratesRouter = Router()
@@ -7,6 +8,6 @@ export const ratesRouter = Router()
 ratesRouter.get(
   '/rates',
   asyncHandler(async (_req, res) => {
-    res.json(await getRates())
+    res.json(await getRates(await getDataStore()))
   })
 )

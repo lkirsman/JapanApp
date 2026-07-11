@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url'
 import type {
   Category,
   DataStore,
+  ExchangeRates,
   FileAttachment,
   FileInput,
   FileUrlResult,
@@ -58,6 +59,7 @@ export function createMemoryStore(initial?: MemoryData): DataStore {
   db.itinerary ??= [] // optional in older fixtures
   // uploaded blobs live in memory only (dev/tests); seeded samples come from public/
   const blobs = new Map<string, { bytes: Buffer; mime: string }>()
+  let latestRates: ExchangeRates | null = null
 
   const emptyCounts = (): Record<Category, number> =>
     Object.fromEntries(CATEGORIES.map((c) => [c, 0])) as Record<Category, number>
@@ -268,6 +270,14 @@ export function createMemoryStore(initial?: MemoryData): DataStore {
       const abs = path.join(process.cwd(), 'public', file.storage_path)
       if (!existsSync(abs)) return 'FILE_MISSING'
       return { url: `/${file.storage_path.replace(/\\/g, '/')}`, expires_in: 300 }
+    },
+
+    async getLatestRates() {
+      return latestRates ? { ...latestRates } : null
+    },
+
+    async saveRates(rates: ExchangeRates) {
+      latestRates = { ...rates }
     },
 
     async search(query) {

@@ -116,6 +116,13 @@ export interface FileInput {
   size_bytes: number
 }
 
+export interface ExchangeRates {
+  base: 'JPY'
+  date: string // YYYY-MM-DD
+  usd: number // 1 JPY in USD
+  ils: number // 1 JPY in ILS
+}
+
 export type FileUrlResult = { url: string; expires_in: number } | 'FILE_MISSING'
 
 export interface DataStore {
@@ -166,6 +173,11 @@ export interface DataStore {
 
   /** Free-text search across places, zones, and tips (case-insensitive). */
   search(query: string): Promise<{ places: Place[]; zones: Zone[]; tips: Tip[] }>
+
+  /** Last exchange rate we successfully fetched (durable fallback), or null. */
+  getLatestRates(): Promise<ExchangeRates | null>
+  /** Persist the latest fetched exchange rate (one row per base currency). */
+  saveRates(rates: ExchangeRates): Promise<void>
 }
 
 let store: DataStore | null = null

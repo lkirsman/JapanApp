@@ -5,6 +5,7 @@ import { randomUUID } from 'node:crypto'
 import type {
   Category,
   DataStore,
+  ExchangeRates,
   FileAttachment,
   FileInput,
   FileUrlResult,
@@ -286,6 +287,22 @@ export function createSupabaseStore(): DataStore {
       // row exists but the blob is gone → FILE_MISSING (contracts/api.md)
       if (error || !data?.signedUrl) return 'FILE_MISSING'
       return { url: data.signedUrl, expires_in: SIGNED_URL_TTL }
+    },
+
+    async getLatestRates() {
+      const { data } = await db
+        .from('exchange_rates')
+        .select('base,date,usd,ils')
+        .eq('base', 'JPY')
+        .maybeSingle()
+      return (data as ExchangeRates) ?? null
+    },
+
+    async saveRates(rates: ExchangeRates) {
+      await db.from('exchange_rates').upsert(
+        { base: rates.base, date: rates.date, usd: rates.usd, ils: rates.ils, fetched_at: new Date().toISOString() },
+        { onConflict: 'base' }
+      )
     },
 
     async search(query) {
