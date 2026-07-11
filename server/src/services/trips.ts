@@ -2,6 +2,7 @@
 // in one call — trip, ordered steps with embedded zone summaries + counts.
 import type { DataStore } from '../lib/datastore.js'
 import { notFound } from '../lib/errors.js'
+import { FLIGHT } from '../lib/flight.js'
 
 export async function getTripBundle(store: DataStore) {
   const trip = await store.getTrip()
@@ -21,5 +22,5 @@ export async function getTripBundle(store: DataStore) {
     })
   )
   const trip_files_count = await store.countTripFiles(trip.id)
-  return { trip, steps: stepsWithZones, trip_files_count }
+  return { trip, steps: stepsWithZones, trip_files_count, flight: FLIGHT }
 }

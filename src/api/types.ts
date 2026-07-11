@@ -40,10 +40,24 @@ export interface TripStep {
   zone: ZoneSummary | null
 }
 
+export interface FlightLeg {
+  flight_no: string
+  from: string
+  to: string
+}
+
+export interface FlightInfo {
+  airline: string
+  booking_ref: string
+  depart_at: string // ISO instant of first departure
+  legs: FlightLeg[]
+}
+
 export interface TripBundle {
   trip: Trip
   steps: TripStep[]
   trip_files_count: number
+  flight?: FlightInfo
 }
 
 export interface Tip {

@@ -41,7 +41,7 @@ writeFileSync(
     'Replace it with the real flight confirmation during',
     'infrastructure activation (tasks Phase 8).',
     '',
-    'Yuval & Luz in Japan - 2026',
+    'Yuval & Luciana in Japan - 2026',
   ])
 )
 

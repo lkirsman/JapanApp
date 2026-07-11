@@ -22,6 +22,16 @@ describe('GET /api/trip', () => {
     expect(tokyo.place_counts).toEqual({ hotel: 1, attraction: 0, food: 1, shopping: 0, other: 0 })
     expect(res.body.trip_files_count).toBe(1)
   })
+
+  it('includes the outbound flight (booking ref + legs) for the countdown', async () => {
+    const res = await auth(request(app).get('/api/trip'))
+    expect(res.body.flight.booking_ref).toBe('AOXIUF')
+    expect(res.body.flight.depart_at).toBe('2026-09-18T16:15:00+03:00')
+    expect(res.body.flight.legs.map((l: { flight_no: string }) => l.flight_no)).toEqual([
+      'ET 419',
+      'ET 672',
+    ])
+  })
 })
 
 describe('GET /api/zones/:id', () => {

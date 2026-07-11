@@ -9,7 +9,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['apple-touch-icon.png', 'favicon-32.png'],
       manifest: {
-        name: 'Japan — Yuval & Luz',
+        name: 'Japan — Yuval & Luciana',
         short_name: 'Japan 旅',
         description: 'Our Japan trip companion',
         theme_color: '#ff5a4d',

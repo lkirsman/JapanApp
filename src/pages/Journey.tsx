@@ -1,5 +1,6 @@
 import { useItinerary, useTrip } from '../api/hooks'
 import type { MapCity } from '../components/TripMap'
+import { CountdownWidget } from '../components/CountdownWidget'
 import { ErrorState } from '../components/ErrorState'
 import { JourneyStepsSlider, stepStatus } from '../components/JourneyStepsSlider'
 import { Loading } from '../components/Loading'
@@ -44,6 +45,8 @@ export default function Journey() {
           {fmt(data.trip.start_date)} – {fmt(data.trip.end_date)} · {data.steps.length} stops
         </p>
       </div>
+
+      {data.flight && <CountdownWidget flight={data.flight} />}
 
       <div className="h-64 overflow-hidden rounded-3xl shadow-card ring-1 ring-line">
         <TripMap cities={cities} />

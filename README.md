@@ -1,4 +1,4 @@
-# Yuval & Luz in Japan 日本の旅
+# Yuval & Luciana in Japan 日本の旅
 
 A private, mobile-first trip companion for our Japan trip: browse hotels, attractions, food & cafes, shopping and other places by zone; see the journey as a timeline with today's stop highlighted; open collected documents; and add/edit/delete places and tips on the fly.
 

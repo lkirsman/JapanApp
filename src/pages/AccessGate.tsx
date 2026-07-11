@@ -34,7 +34,7 @@ export default function AccessGate() {
           旅
         </span>
         <h1 className="mt-6 font-display text-4xl font-extrabold tracking-tight text-white">Japan</h1>
-        <p className="mt-2 text-white/85">Yuval &amp; Luz · our trip companion</p>
+        <p className="mt-2 text-white/85">Yuval &amp; Luciana · our trip companion</p>
 
         <form onSubmit={submit} className="mt-10 flex w-full flex-col gap-3 text-left">
           <input
