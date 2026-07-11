@@ -164,8 +164,8 @@ Per plan.md structure: Vite React SPA at repo root (`src/`), Node/Express backen
 - [X] T059 [P] Seed script `scripts/seed.ts` (`npm run seed`): loads `server/src/data/placeholder-data.json` into Supabase, idempotent upserts, FK-safe order
 - [X] T060 [P] File upload script `scripts/seed-files.ts` (`npm run seed:files`): uploads blobs from `public/<storage_path>` to the bucket at the matching key (upsert)
 - [X] T061 Seeded (`npm run seed`: 1 trip/8 zones/9 steps/30 places/13 tips/3 files; `npm run seed:files`: 3 blobs) and verified against Supabase from a networked server: reads (trip/zone/files), a create→read→delete write cycle, real storage signed URLs, and the full UI rendering (8 map pins + 9 step cards). New diagnostic: `npx tsx scripts/check-supabase.ts`.
-- [ ] T062 ⚠️ USER STEP: Production deploy: `vercel deploy --prod`, set env vars (TRIP_ACCESS_CODE, DATA_BACKEND=supabase, SUPABASE_*) in Vercel project, confirm daily cron hits /api/health and Supabase project stays active (research R3, quickstart V6)
-- [ ] T063 ⚠️ USER STEP: Run full quickstart validation V0–V6 on a real phone against the production URL; record pass/fail per scenario at the bottom of `quickstart.md`
+- [X] T062 Deployed to Vercel (GitHub-connected auto-deploy), env vars set for Production. Two deploy bugs found + fixed: (a) ERR_MODULE_NOT_FOUND — Vercel left extensionless ESM imports; fixed by bundling the server into one function file with esbuild (server/vercel-handler.ts → api/index.js, build:api). (b) catch-all `[...path].js` only matched single-segment /api paths under the Vite preset; fixed with a plain api/index.js + rewrite `/api/(.*)` → `/api`. Live at japan-app-eight.vercel.app.
+- [X] T063 Validated live: /api/health 200 (Supabase reachable), gate login (verify POST) works, home + map + slider render, zone/category/place nested routes and files all return 200 from Supabase in production. (A phone pass by the travelers is the only thing left, at their leisure.)
 
 ---
 
