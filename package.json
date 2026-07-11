@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "seed": "tsx scripts/seed.ts",
-    "seed:files": "tsx scripts/seed-files.ts"
+    "seed:files": "tsx scripts/seed-files.ts",
+    "check:db": "tsx scripts/check-supabase.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.2",

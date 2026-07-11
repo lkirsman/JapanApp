@@ -38,14 +38,14 @@ npm run build      # production bundle (~86 KB gzip JS)
 All the code is written — schema, Supabase datastore, and seed scripts. Going
 live is just account setup + flipping one env var (no feature-code changes):
 
-1. **Create a free Supabase project.** Copy its **Project URL** and **service-role key** (Settings → API).
+1. **Create a free Supabase project.** Copy its **Project URL** and **secret API key** (`sb_secret_...`, Settings → API).
 2. **Run the schema:** paste [supabase/migrations/0001_init.sql](supabase/migrations/0001_init.sql) into the Supabase SQL editor and run it.
 3. **Create a private Storage bucket** named `trip-files`.
 4. **Set env** in `.env.local`:
    ```
    DATA_BACKEND=supabase
    SUPABASE_URL=...
-   SUPABASE_SERVICE_KEY=...
+   SUPABASE_SECRET_KEY=...
    ```
 5. **Seed:** `npm run seed` (rows) then `npm run seed:files` (blobs). Re-run `npm run dev` — edits now persist across restarts.
 6. **Deploy:** `vercel deploy --prod` (Hobby, $0), set the same env vars in the Vercel project. [vercel.json](vercel.json) already routes `/api/*` and runs a daily cron on `/api/health` to keep Supabase from pausing.

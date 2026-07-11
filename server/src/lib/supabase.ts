@@ -8,10 +8,12 @@ let client: SupabaseClient | null = null
 export function getSupabase(): SupabaseClient {
   if (client) return client
   const url = process.env.SUPABASE_URL
-  const key = process.env.SUPABASE_SERVICE_KEY
+  // New Supabase API keys use SUPABASE_SECRET_KEY (sb_secret_...); fall back to
+  // the legacy service-role env name for older projects.
+  const key = process.env.SUPABASE_SECRET_KEY ?? process.env.SUPABASE_SERVICE_KEY
   if (!url || !key) {
     throw new Error(
-      'SUPABASE_URL and SUPABASE_SERVICE_KEY must be set to use DATA_BACKEND=supabase'
+      'SUPABASE_URL and SUPABASE_SECRET_KEY must be set to use DATA_BACKEND=supabase'
     )
   }
   client = createClient(url, key, {

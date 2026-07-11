@@ -35,14 +35,14 @@ npm test          # Vitest: server route tests (supertest) + frontend component 
 ## Infrastructure activation (deferred — tasks Phase 8)
 
 1. **Supabase project** (free tier):
-   - Create a project; note the project URL and the **service-role key** (server-only secret).
+   - Create a project; note the project URL and the **secret API key** (`sb_secret_...`, Settings → API; server-only). Legacy projects: the `service_role` JWT works too.
    - Run the schema: apply `supabase/migrations/*.sql` (SQL editor or `supabase db push`). This creates all tables, check constraints, indexes, and deny-all RLS.
    - Create a **private** Storage bucket named `trip-files`.
 2. **Environment** — extend `.env.local`:
    ```
    DATA_BACKEND=supabase
    SUPABASE_URL=…            # project URL
-   SUPABASE_SERVICE_KEY=…    # service-role key (never shipped to the browser)
+   SUPABASE_SECRET_KEY=…     # secret API key sb_secret_... (server-only, never shipped to the browser)
    ```
 3. **Seed real content**:
    ```
@@ -56,7 +56,7 @@ npm test          # Vitest: server route tests (supertest) + frontend component 
 ```
 vercel deploy --prod
 ```
-- Set the env vars (TRIP_ACCESS_CODE, DATA_BACKEND=supabase, SUPABASE_URL, SUPABASE_SERVICE_KEY) in the Vercel project settings.
+- Set the env vars (TRIP_ACCESS_CODE, DATA_BACKEND=supabase, SUPABASE_URL, SUPABASE_SECRET_KEY) in the Vercel project settings.
 - Confirm `vercel.json` registered the daily cron → `GET /api/health` (Supabase keep-alive, research R3).
 - Budget check (SC-005 / FR-014): Vercel Hobby and Supabase Free are hard-capped at $0 with no card on file — spend cannot exceed $0.
 
